@@ -1,4 +1,4 @@
-Biler` is a tool that helps you to build your own static site.
+`Anatolik` is a tool that helps you to build your own static site.
 
 It's build for me by me and I don't think it will fits your needs. As a person
 with heavy NIH syndrom I was not satisfied with existing static blogging
@@ -18,7 +18,7 @@ that's why I'm releasing this.
 How it works
 ------------
 
-Biler operates on Site with Posts, Layouts and Pages.
+Anatolik operates on Site with Posts, Layouts and Pages.
 
 - Site is a global object that contains general information about whole site.
 - Posts are content documents. Posts must supply layout to use. Posts are
