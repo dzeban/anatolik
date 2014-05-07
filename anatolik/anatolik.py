@@ -6,6 +6,7 @@ import shutil
 from glob import glob
 from pprint import pprint
 from collections import OrderedDict
+import pdb
 
 from .Config import site
 from .Config import init as site_init
@@ -19,20 +20,20 @@ __version__ = "0.1"
 
 def parse():
     path = site.root['config']
-    all_files = []
-    posts = []
-    layouts = []
+    all_files = set()
+    posts = set()
+    layouts = set()
 
     for root, _, files in os.walk(path):
         if (len(files) == 0): # Don't care about empty dirs
             continue
 
         for f in files:
-            all_files.append(root + os.sep + f)
-        posts.extend( glob(root + os.sep + site.config['posts']) )
-        layouts.extend( glob(root + os.sep + site.config['layouts']) )
+            all_files.add(root + os.sep + f)
+        posts |= set(glob(root + os.sep + site.config['posts']))
+        layouts |= set(glob(root + os.sep + site.config['layouts']))
 
-    site.files = all_files
+    site.files = all_files - posts - layouts
     site.post_files = posts
     site.layout_files = layouts
 
