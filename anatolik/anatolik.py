@@ -17,25 +17,24 @@ from .Util import copy_dir
 
 __version__ = "0.1"
 
-def parse_files():
-    print('\n [:::  Files processing :::]\n')
+def parse():
+    path = site.root['config']
+    all_files = []
+    posts = []
+    layouts = []
 
-    path = site.root['content']
-    print('Looking for files in {}'.format(path))
-
-    # Collect posts files
-    files_list = []
-    site.md_files = []
-    for root, dirs, files in os.walk( path ):
-        if( len(files) == 0): # Don't care about empty dirs
+    for root, _, files in os.walk(path):
+        if (len(files) == 0): # Don't care about empty dirs
             continue
-        
+
         for f in files:
-            files_list.append(root + os.sep + f)
+            all_files.append(root + os.sep + f)
+        posts.extend( glob(root + os.sep + site.config['posts']) )
+        layouts.extend( glob(root + os.sep + site.config['layouts']) )
 
-        site.md_files.extend(glob(root + os.sep + '*.md'))
-
-    site.files = [item for item in files_list if item not in site.md_files] 
+    pprint(all_files)
+    pprint(posts)
+    pprint(layouts)
 
 def parse_posts():
     print('\n [:::  Posts processing :::]\n')
@@ -105,12 +104,13 @@ def main():
 
     site_init()
     print('Parsed config:');  pprint(site.config); print('---')
+    parse()
+    #load()
+    #render()
+    #output()
 
-    parse_files()
-    parse_posts()
-    parse_layouts()
-    render()
-    create_output()
-
-#if __name__ == "__main__":
-#    main()
+    #parse_files()
+    #parse_posts()
+    #parse_layouts()
+    #render()
+    #create_output()
