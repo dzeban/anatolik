@@ -5,6 +5,7 @@ from .Config import site
 import flickrapi
 import re
 import sys
+import pdb
 
 from urllib.parse import urlparse
 
@@ -38,18 +39,16 @@ class Flickr:
         return set_id
 
     def form_url (self, pattr):
-        print(pattr)
         pu = self.static_link_template % (pattr['farm'], pattr['server'], pattr['id'], pattr['secret'])
         return pu
 
     def get_url(self, set_ph, photo_t):
-        print("photo_t is {}".format(photo_t))
         ph_url = ''
         for ph in set_ph.iter():
             if ph.tag == 'photo':
-                print(ph.attrib['title'])
-                if ph.attrib['title'] == photo_t:
-                    pa =  ph.attrib
+                photo_title = ph.attrib['title'].split('.')[0]
+                if photo_title == photo_t:
+                    pa = ph.attrib
                     ph_url = self.form_url(pa)
         return ph_url
 
@@ -66,26 +65,9 @@ class Flickr:
         return album, photo
 
     def parse_urls(self, text):
-
         for flickurl in re.finditer(self.regex, text):
             album, photo = self.parse_url(flickurl.group(0))
             static_url = self.static_url( album, photo)
             text = text.replace(flickurl.group(0), static_url)
-
         return text
 
-    #print_url(photo_title1, photoset_title1)
-
-    # def print_url (photo_title, photoset_title = ""):
-    #     if photoset_title != "":
-    #         set_id = find_set (sets, photoset_title)
-    #         set_photos =  flickr.photosets_getPhotos(api_key = api_key, photoset_id = set_id)
-    #         url = get_url(set_photos, photo_title)
-    #     else:
-    #         my_photo = flickr.photos_search(api_key = api_key, user_id = user_id, text = photo_title)
-    #         if len(my_photo[0]) == 1:
-    #             pws = my_photo[0][0].attrib
-    #             url = form_url(pws)
-    #         else:
-    #             return False
-    #     print(url)

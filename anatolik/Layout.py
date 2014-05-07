@@ -16,6 +16,4 @@ class Layout(object):
             self.content = f.read()
         
         self.name = Util.name( filepath ) 
-
-    def render(self):
-        pass
+        return True

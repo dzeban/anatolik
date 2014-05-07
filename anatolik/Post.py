@@ -31,6 +31,9 @@ class Post(object):
         self.html = ''
         self.content = ''
 
+    def __str__(self):
+        return '{}: [{}] in {}, {}'.format(self.Slug, self.Date, self.Category, self.Layout)
+
     def parse_front_matter(self, front_matter):
         if len(front_matter) is 0: # Nothing to do here
             return True 

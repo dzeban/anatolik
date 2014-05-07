@@ -32,38 +32,22 @@ def parse():
         posts.extend( glob(root + os.sep + site.config['posts']) )
         layouts.extend( glob(root + os.sep + site.config['layouts']) )
 
-    pprint(all_files)
-    pprint(posts)
-    pprint(layouts)
+    site.files = all_files
+    site.post_files = posts
+    site.layout_files = layouts
 
-def parse_posts():
-    print('\n [:::  Posts processing :::]\n')
-
-    # Load post files into objects
-    for path in site.md_files:
+def load():
+    for path in site.post_files:
         p = Post()
-        if p.load(path) is True:
-            site.posts[ p.Slug ] = p
+        if p.load(path):
+            site.posts[p.Slug] = p
+    
+    for path in site.layout_files:
+        l = Layout()
+        if l.load(path):
+            site.layouts[l.name] = l
 
     site.posts = OrderedDict(sorted(site.posts.items(), key = lambda p: p[1].Date, reverse = True))
-    
-def parse_layouts():
-    print('\n [:::  Layouts processing :::]\n')
-
-    layouts_path = site.root['layouts']
-    print('Looking for layouts in {}'.format(layouts_path))
-
-    # Collect layout files
-    layouts = []
-    for root, dirs, files in os.walk( layouts_path ):
-        if( len(files) == 0): # Don't care about empty dirs
-            continue
-        layouts.extend(glob(root + os.sep + '*.tmpl'))
-    
-    for path in layouts:
-        l = Layout()
-        l.load(path)
-        site.layouts[l.name] = l
 
 def render():
     print('\n [:::  Rendering :::]\n')
@@ -71,7 +55,7 @@ def render():
         post.render()
         post.render_layout()
 
-def create_output():
+def output():
     print('\n [:::  Writing output :::]\n')
     out_dir = site.root['output']
     for post in site.posts.values():
@@ -105,12 +89,6 @@ def main():
     site_init()
     print('Parsed config:');  pprint(site.config); print('---')
     parse()
-    #load()
-    #render()
-    #output()
-
-    #parse_files()
-    #parse_posts()
-    #parse_layouts()
-    #render()
-    #create_output()
+    load()
+    render()
+    output()
