@@ -3,6 +3,7 @@
 import yaml
 import os
 import locale
+import pickle
 
 class Site(object):
     config_path = "settings.yml"
@@ -12,6 +13,9 @@ class Site(object):
     posts   = {} # Map of post objects
     pages   = [] # List of page objects
     categories = set() # Set of categories
+
+    cache = set()
+    cache_name = '.cache'
 
 ################################
 # Global configuration to import
@@ -35,3 +39,8 @@ def init():
         root = site.root['config']
         for k,v in site.config['dirs'].items():
             site.root[k] = os.path.join(root, v)
+
+    cache_path = os.path.join(site.root['config'], site.cache_name)
+    if os.path.exists(cache_path):
+        with open(cache_path, 'rb') as cache_file:
+            site.cache = pickle.load(cache_file)

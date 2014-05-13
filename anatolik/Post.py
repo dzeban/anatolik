@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 
-from .Config import site
-from .flickr import Flickr
-from . import Util
+import os
+import yaml
+from datetime import date
+from pwd import getpwuid
+from zlib import crc32
 
 from markdown import markdown
 from pypandoc import convert
 from mako.template import Template
 from mako.lookup import TemplateLookup
 
-import os
-import yaml
-from datetime import date
-from pwd import getpwuid
+
+from .Config import site
+from .flickr import Flickr
+from . import Util
+
 
 class Post(object):
     def __init__(self):
@@ -30,6 +33,8 @@ class Post(object):
         self.markup = ''
         self.html = ''
         self.content = ''
+
+        self.crc32 = 0
 
     def __str__(self):
         return '{}: [{}] in {}, {}'.format(self.Slug, self.Date, self.Category, self.Layout)
@@ -81,7 +86,8 @@ class Post(object):
 
         self.Url = os.path.join(self.Category, self.Slug) + '.html'
 
-        print('Loaded post {}'.format(filepath))
+        self.crc32 = crc32(bytes(self.markup, 'utf8'))
+
         return True
 
     def render(self):

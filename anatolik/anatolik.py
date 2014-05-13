@@ -3,6 +3,7 @@
 import sys
 import os
 import shutil
+import pickle
 from glob import glob
 from pprint import pprint
 from collections import OrderedDict
@@ -40,7 +41,15 @@ def load():
     for path in site.post_files:
         p = Post()
         if p.load(path):
-            site.posts[p.Slug] = p
+            if p.crc32 in site.cache:
+                print('> Skipping cached post {}'.format(p.Slug))
+                continue
+
+            site.posts[p.crc32] = p
+            # site.posts dict keys are crc32 checksums. This will allow to render only
+            # changed files according to cached data.
+
+            print('Loaded post {}'.format(p.Slug))
     
     for path in site.layout_files:
         l = Layout()
@@ -78,6 +87,10 @@ def output():
         if os.path.exists(path):
             os.remove(path)
         shutil.copy(f, path)
+
+    checksums = set(site.posts.keys())
+    cache_file = open(os.path.join(site.root['config'], site.cache_name), 'wb')
+    pickle.dump(checksums, cache_file)
 
 def usage():
     print("main.py [config path]")
