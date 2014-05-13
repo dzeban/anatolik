@@ -6,7 +6,6 @@ import shutil
 from glob import glob
 from pprint import pprint
 from collections import OrderedDict
-import pdb
 
 from .Config import site
 from .Config import init as site_init
@@ -67,7 +66,11 @@ def output():
         print(path)
 
     for f in site.files:
-        file_path = f.split(site.root['content'])[-1]
+        path_split = f.split(site.root['content'])
+        if len(path_split) == 1: # Doesn't split
+            continue
+
+        file_path = path_split[-1]
         file_path = file_path[1:] # Cut first '/'
         path = os.path.join(out_dir, file_path)
         print(path)
