@@ -89,7 +89,7 @@ def output():
         shutil.copy(f, path)
 
     checksums = set(site.posts.keys())
-    cache_file = open(os.path.join(site.root['config'], site.cache_name), 'wb')
+    cache_file = open(os.path.join(site.root['output'], site.cache_name), 'wb')
     pickle.dump(checksums, cache_file)
 
 def usage():

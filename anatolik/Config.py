@@ -40,7 +40,7 @@ def init():
         for k,v in site.config['dirs'].items():
             site.root[k] = os.path.join(root, v)
 
-    cache_path = os.path.join(site.root['config'], site.cache_name)
+    cache_path = os.path.join(site.root['output'], site.cache_name)
     if os.path.exists(cache_path):
         with open(cache_path, 'rb') as cache_file:
             site.cache = pickle.load(cache_file)
