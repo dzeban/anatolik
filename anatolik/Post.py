@@ -10,7 +10,7 @@ from markdown import markdown
 from pypandoc import convert
 from mako.template import Template
 from mako.lookup import TemplateLookup
-
+import requests
 
 from .Config import site
 from .flickr import Flickr
@@ -35,6 +35,7 @@ class Post(object):
         self.content = ''
 
         self.crc32 = 0
+        self.typograf_url = "http://www.typograf.ru/webservice/"
 
     def __str__(self):
         return '{}: [{}] in {}, {}'.format(self.Slug, self.Date, self.Category, self.Layout)
@@ -103,6 +104,11 @@ class Post(object):
         # Render markdown
         self.html = convert(source=self.markup, to='html', format='markdown', 
                                 extra_args=site.config['markdown']['extra_args'])
+
+        # Final typography processing
+        r = requests.post(self.typograf_url, {"text":self.html, "chr":"UTF-8"})
+        if r.ok:
+            self.html = r.text
 
     def render_layout(self):
         # Lookup post template
