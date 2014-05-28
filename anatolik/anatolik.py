@@ -7,6 +7,7 @@ import pickle
 from glob import glob
 from pprint import pprint
 from collections import OrderedDict
+from pyatom import AtomFeed
 
 from .Config import site
 from .Config import init as site_init
@@ -88,6 +89,25 @@ def output():
             os.remove(path)
         shutil.copy(f, path)
 
+    # Generate feed
+    feed = AtomFeed(title    = site.info['title'],
+                    feed_url = site.info['url'] + '/feed',
+                    url      = site.info['url'],
+                    author   = site.info['author'])
+
+    for post in site.posts.values():
+        if post.Layout == 'post':
+            feed.add(title        = post.Title,
+                     content      = post.html,
+                     content_type = "html",
+                     author       = post.Author,
+                     url          = post.Url,
+                     updated      = post.Date)
+
+    with open(os.path.join( site.root['output'],'feed'), 'w') as feed_file:
+        feed_file.write(feed.to_string())
+
+    # Update cache
     checksums = set(site.posts.keys())
     cache_file = open(os.path.join(site.root['output'], site.cache_name), 'wb')
     pickle.dump(checksums, cache_file)

@@ -24,6 +24,7 @@ class Post(object):
         self.Date = ''
         self.Category = ''
         self.Slug = ''
+        self.Url = ''
         self.Layout = ''
         self.Draft = False
         self.Mako = False

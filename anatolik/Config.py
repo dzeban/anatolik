@@ -8,6 +8,7 @@ import pickle
 class Site(object):
     config_path = "settings.yml"
     config  = {} # Parsed settings.yml
+    info    = {} # General site info
     root    = {} # Map of filepath roots
     layouts = {} # Map of layout objects
     posts   = {} # Map of post objects
@@ -39,6 +40,9 @@ def init():
         root = site.root['config']
         for k,v in site.config['dirs'].items():
             site.root[k] = os.path.join(root, v)
+
+        for k,v in site.config['info'].items():
+            site.info[k] = v
 
     cache_path = os.path.join(site.root['output'], site.cache_name)
     if os.path.exists(cache_path):
