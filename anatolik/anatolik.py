@@ -42,9 +42,8 @@ def load():
     for path in site.post_files:
         p = Post()
         if p.load(path):
-            if p.crc32 in site.cache:
-                print('> Skipping cached post {}'.format(p.Slug))
-                continue
+            if p.crc32 not in site.cache:
+                site.staged[p.crc32] = p
 
             site.posts[p.crc32] = p
             # site.posts dict keys are crc32 checksums. This will allow to render only
@@ -58,17 +57,18 @@ def load():
             site.layouts[l.name] = l
 
     site.posts = OrderedDict(sorted(site.posts.items(), key = lambda p: p[1].Date, reverse = True))
+    site.staged = OrderedDict(sorted(site.staged.items(), key = lambda p: p[1].Date, reverse = True))
 
 def render():
     print('\n [:::  Rendering :::]\n')
-    for post in site.posts.values():
+    for post in site.staged.values():
         post.render()
         post.render_layout()
 
 def output():
     print('\n [:::  Writing output :::]\n')
     out_dir = site.root['output']
-    for post in site.posts.values():
+    for post in site.staged.values():
         path = os.path.join(out_dir, post.Url)
         os.makedirs(os.path.dirname(path), exist_ok = True)
         with open(path, 'w') as f:

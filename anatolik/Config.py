@@ -12,7 +12,7 @@ class Site(object):
     root    = {} # Map of filepath roots
     layouts = {} # Map of layout objects
     posts   = {} # Map of post objects
-    pages   = [] # List of page objects
+    staged  = {} # Map of staged posts - posts to be rendered
     categories = set() # Set of categories
 
     cache = set()
