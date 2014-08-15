@@ -108,9 +108,9 @@ def output():
         feed_file.write(feed.to_string())
 
     # Update cache
-    checksums = set(site.posts.keys())
-    cache_file = open(os.path.join(site.root['output'], site.cache_name), 'wb')
-    pickle.dump(checksums, cache_file)
+    with open(os.path.join(site.root['output'], site.cache_name), 'wb') as cache_file:
+        pickle.dump(site.posts, cache_file)
+
 
 def usage():
     print("main.py [config path]")

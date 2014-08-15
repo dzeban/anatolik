@@ -4,6 +4,7 @@ import yaml
 import os
 import locale
 import pickle
+from collections import OrderedDict
 
 class Site(object):
     config_path = "settings.yml"
@@ -15,7 +16,7 @@ class Site(object):
     staged  = {} # Map of staged posts - posts to be rendered
     categories = set() # Set of categories
 
-    cache = set()
+    cache = OrderedDict()
     cache_name = '.cache'
 
 ################################
