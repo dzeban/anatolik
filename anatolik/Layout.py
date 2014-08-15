@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from .Config import site
+from .Site import site
 from . import Util
 
 class Layout(object):

@@ -12,11 +12,9 @@ class Site(object):
     info    = {} # General site info
     root    = {} # Map of filepath roots
     layouts = {} # Map of layout objects
-    posts   = {} # Map of post objects
-    staged  = {} # Map of staged posts - posts to be rendered
+    posts   = OrderedDict() # Map of post objects
     categories = set() # Set of categories
 
-    cache = OrderedDict()
     cache_name = '.cache'
 
 ################################
@@ -48,4 +46,4 @@ def init():
     cache_path = os.path.join(site.root['output'], site.cache_name)
     if os.path.exists(cache_path):
         with open(cache_path, 'rb') as cache_file:
-            site.cache = pickle.load(cache_file)
+            site.posts = pickle.load(cache_file)

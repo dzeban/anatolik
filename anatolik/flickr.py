@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from .Config import site
+from .Site import site
 
 import flickrapi
 import re

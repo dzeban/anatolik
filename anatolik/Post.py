@@ -12,7 +12,7 @@ from mako.template import Template
 from mako.lookup import TemplateLookup
 import requests
 
-from .Config import site
+from .Site import site
 from .flickr import Flickr
 from . import Util
 

@@ -9,8 +9,8 @@ from pprint import pprint
 from collections import OrderedDict
 from pyatom import AtomFeed
 
-from .Config import site
-from .Config import init as site_init
+from .Site import site
+from .Site import init as site_init
 
 from .Layout import Layout
 from .Post import Post
@@ -42,14 +42,18 @@ def load():
     for path in site.post_files:
         p = Post()
         if p.load(path):
-            if p.crc32 not in site.cache:
-                site.staged[p.crc32] = p
+            post_slug = p.Slug
 
-            site.posts[p.crc32] = p
-            # site.posts dict keys are crc32 checksums. This will allow to render only
-            # changed files according to cached data.
+            # Check for new posts
+            if post_slug not in site.posts:
+                site.posts[post_slug] = p
+            else:
+                # Check for updated posts
+                if site.posts[post_slug].crc32 != p.crc32:
+                    site.posts.pop(post_slug)
+                    site.posts[post_slug] = p
 
-            print('Loaded post {}'.format(p.Slug))
+            print('Loaded post {}'.format(post_slug))
     
     for path in site.layout_files:
         l = Layout()
@@ -57,18 +61,18 @@ def load():
             site.layouts[l.name] = l
 
     site.posts = OrderedDict(sorted(site.posts.items(), key = lambda p: p[1].Date, reverse = True))
-    site.staged = OrderedDict(sorted(site.staged.items(), key = lambda p: p[1].Date, reverse = True))
 
 def render():
     print('\n [:::  Rendering :::]\n')
-    for post in site.staged.values():
-        post.render()
-        post.render_layout()
+    for post in site.posts.values():
+        if len(post.html) == 0:
+            post.render()
+            post.render_layout()
 
 def output():
     print('\n [:::  Writing output :::]\n')
     out_dir = site.root['output']
-    for post in site.staged.values():
+    for post in site.posts.values():
         path = os.path.join(out_dir, post.Url)
         os.makedirs(os.path.dirname(path), exist_ok = True)
         with open(path, 'w') as f:
