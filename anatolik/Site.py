@@ -27,8 +27,6 @@ def init():
     """ Initialize global site configuration from settings.yml """
     global site
 
-    locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
-
     with open(site.config_path) as f:
         config = yaml.load(f)
         site.config = config
@@ -42,6 +40,8 @@ def init():
 
         for k,v in site.config['info'].items():
             site.info[k] = v
+
+    locale.setlocale(locale.LC_ALL, site.info['locale'])
 
     cache_path = os.path.join(site.root['output'], site.cache_name)
     if os.path.exists(cache_path):
