@@ -15,6 +15,17 @@ My needs:
 None of existing static blogging platforms have fit me, so here where I am and
 that's why I'm releasing this.
 
+Dependencies
+------------
+
+* python3
+* pyatom
+* PyYAML
+* pypandoc
+* mako
+* requests
+
+
 How it works
 ------------
 

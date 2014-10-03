@@ -6,7 +6,6 @@ from datetime import date
 from pwd import getpwuid
 from zlib import crc32
 
-from markdown import markdown
 from pypandoc import convert
 from mako.template import Template
 from mako.lookup import TemplateLookup

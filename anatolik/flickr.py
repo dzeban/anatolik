@@ -2,7 +2,7 @@
 
 from .Site import site
 
-import flickrapi
+#import flickrapi
 import re
 import sys
 import pdb
