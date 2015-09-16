@@ -38,6 +38,7 @@ translated into HTML. Posts can have templates.
 templates.
 - Pages are final stage. Page it's a processed layout with content.
 
+```
 	+------------------------+
 	|                        |
 	|         Page           |
@@ -75,6 +76,7 @@ templates.
 	| (Markdown + Templates) |
 	|                        |
 	+------------------------+
+```
 
 From the top view compilation process is following
 
