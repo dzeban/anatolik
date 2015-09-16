@@ -5,8 +5,9 @@ with heavy NIH syndrom I was not satisfied with existing static blogging
 systems, so I made my own. Yay!
 
 My needs:
-* Python.  I need a system that I can talk to in it's native language.
-* Python 3.  Yes, exactly third version, because I speak russian and need
+
+* Python. I need a system that I can talk to in it's native language.
+* Python 3. Yes, exactly third version, because I speak russian and need
   unicode support. Also I don't want system that developed for outdated version
   of language.
 * Content interlinks. I need to reference to other of my post.
@@ -25,7 +26,6 @@ Dependencies
 * mako
 * requests
 
-
 How it works
 ------------
 
@@ -38,43 +38,43 @@ translated into HTML. Posts can have templates.
 templates.
 - Pages are final stage. Page it's a processed layout with content.
 
-+------------------------+
-|                        |
-|         Page           |
-|                        |
-|      (Pure HTML)       |
-|                        |
-+------------------------+
-            ^
-            |
-            |
-   Templates processing
-            |
-     Content insertion
-            |
-            |
-+------------------------+
-|                        |
-|        Layout          |
-|                        |
-|   (HTML + Templates)   |
-|                        |
-+------------------------+
-            ^
-            |
-            |
-   Templats processing
-            |
-   Translation to HTML
-            |
-            |
-+------------------------+
-|                        |
-|        Content         |
-|                        |
-| (Markdown + Templates) |
-|                        |
-+------------------------+
+	+------------------------+
+	|                        |
+	|         Page           |
+	|                        |
+	|      (Pure HTML)       |
+	|                        |
+	+------------------------+
+				^
+				|
+				|
+	   Templates processing
+				|
+		 Content insertion
+				|
+				|
+	+------------------------+
+	|                        |
+	|        Layout          |
+	|                        |
+	|   (HTML + Templates)   |
+	|                        |
+	+------------------------+
+				^
+				|
+				|
+	   Templats processing
+				|
+	   Translation to HTML
+				|
+				|
+	+------------------------+
+	|                        |
+	|        Content         |
+	|                        |
+	| (Markdown + Templates) |
+	|                        |
+	+------------------------+
 
 From the top view compilation process is following
 
@@ -104,7 +104,7 @@ From the top view compilation process is following
    * Store Page in output directory under given directory.
 
 4. Put assets in output.
-   
+
 
 Templating
 ----------
@@ -112,6 +112,7 @@ Templating
 Templating is done with Mako templates.
 
 Each post are given 2 dictionaries:
+
 1. `site` - global configuration object. site members:
     * `posts` - list of all posts
     * `layouts` - list of all layouts
