@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Anatolik : Funny static blog engine">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Anatolik</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/dzeban/anatolik">View on GitHub</a>
+
+          <h1 id="project_title">Anatolik</h1>
+          <h2 id="project_tagline">Funny static blog engine</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/dzeban/anatolik/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/dzeban/anatolik/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p><code>Anatolik</code> is a tool that helps you to build your own static site.</p>
+
+<p>It's build for me by me and I don't think it will fits your needs. As a person
+with heavy NIH syndrom I was not satisfied with existing static blogging
+systems, so I made my own. Yay!</p>
+
+<p>My needs:</p>
+
+<ul>
+<li>Python. I need a system that I can talk to in it's native language.</li>
+<li>Python 3. Yes, exactly third version, because I speak russian and need
+unicode support. Also I don't want system that developed for outdated version
+of language.</li>
+<li>Content interlinks. I need to reference to other of my post.</li>
+<li>Simplicity. No social bullshit, no comments, just as little as possible.</li>
+</ul>
+
+<p>None of existing static blogging platforms have fit me, so here where I am and
+that's why I'm releasing this.</p>
+
+<h2>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<ul>
+<li>python3</li>
+<li>pyatom</li>
+<li>PyYAML</li>
+<li>pypandoc</li>
+<li>mako</li>
+<li>requests</li>
+</ul>
+
+<h2>
+<a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>How it works</h2>
+
+<p>Anatolik operates on Site with Posts, Layouts and Pages.</p>
+
+<ul>
+<li>Site is a global object that contains general information about whole site.</li>
+<li>Posts are content documents. Posts must supply layout to use. Posts are
+translated into HTML. Posts can have templates.</li>
+<li>Layouts are markup documents that wraps translated posts. Layouts can also have
+templates.</li>
+<li>Pages are final stage. Page it's a processed layout with content.</li>
+</ul>
+
+<pre><code>    +------------------------+
+    |                        |
+    |         Page           |
+    |                        |
+    |      (Pure HTML)       |
+    |                        |
+    +------------------------+
+                ^
+                |
+                |
+       Templates processing
+                |
+         Content insertion
+                |
+                |
+    +------------------------+
+    |                        |
+    |        Layout          |
+    |                        |
+    |   (HTML + Templates)   |
+    |                        |
+    +------------------------+
+                ^
+                |
+                |
+       Templats processing
+                |
+       Translation to HTML
+                |
+                |
+    +------------------------+
+    |                        |
+    |        Content         |
+    |                        |
+    | (Markdown + Templates) |
+    |                        |
+    +------------------------+
+</code></pre>
+
+<p>From the top view compilation process is following</p>
+
+<ol>
+<li>
+<p>Build site map.
+Site map is hash map accessible from every component that contains:</p>
+
+<ul>
+<li>Configuration;</li>
+<li>Paths to posts, layouts, output, assets;</li>
+<li>Lists of content posts, layouts objects (filled during processing).</li>
+</ul>
+
+<p>Mainly this map is used in templates such as %{ site.url } or 
+%{ site.posts['some-post'] }.</p>
+</li>
+<li>
+<p>Process layouts.
+For every layout:</p>
+
+<ul>
+<li>Parse layout file and instantiate Layout object;</li>
+<li>Render layout templates.</li>
+</ul>
+</li>
+<li>
+<p>Process posts.
+For every content post:</p>
+
+<ul>
+<li>Parse post file and instantiate Post object;</li>
+<li>Render post templates;</li>
+<li>Convert to HTML.</li>
+</ul>
+</li>
+<li>
+<p>For every post.</p>
+
+<ul>
+<li>Instantiate Page object from post and corresponding layout;</li>
+<li>Insert post in layout;</li>
+<li>Store Page in output directory under given directory.</li>
+</ul>
+</li>
+<li><p>Put assets in output.</p></li>
+</ol>
+
+<h2>
+<a id="templating" class="anchor" href="#templating" aria-hidden="true"><span class="octicon octicon-link"></span></a>Templating</h2>
+
+<p>Templating is done with Mako templates.</p>
+
+<p>Each post are given 2 dictionaries:</p>
+
+<ol>
+<li>
+<code>site</code> - global configuration object. site members:
+
+<ul>
+<li>
+<code>posts</code> - list of all posts</li>
+<li>
+<code>layouts</code> - list of all layouts</li>
+<li>
+<code>url</code> - site URL</li>
+</ul>
+</li>
+<li>
+<code>post</code> - current post object</li>
+</ol>
+
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Anatolik maintained by <a href="https://github.com/dzeban">dzeban</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
