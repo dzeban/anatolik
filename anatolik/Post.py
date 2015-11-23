@@ -24,6 +24,7 @@ class Post(object):
         self.Category = ''
         self.Slug = ''
         self.Url = ''
+        self.CanonicalUrl = ''
         self.Layout = ''
         self.Draft = False
         self.Mako = False
@@ -86,6 +87,7 @@ class Post(object):
             return False
 
         self.Url = os.path.join(self.Category, self.Slug) + '.html'
+        self.CanonicalUrl = os.path.join(site.info['url'], self.Url)
 
         self.crc32 = crc32(bytes(self.markup, 'utf8'))
 
